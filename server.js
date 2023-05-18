@@ -6,6 +6,7 @@ const app = express();
 const port = process.env.PORT;
 const morgan = require("morgan");
 const userRouter = require("./src/routes/user");
+const taskRouter = require("./src/routes/task");
 // Connect to the database
 DB.mongoose
   .connect(process.env.MONGO_URI, {
@@ -41,11 +42,15 @@ app.use(
 //   });
 // });
 app.use("/users", userRouter);
+app.use("/tasks", taskRouter);
 app.use((err, req, res, next) => {
   err.statusCode = err.statusCode ? err.statusCode : 500;
   err.message = err.message ? err.message : "Internal Server Error";
   console.error(err.stack);
-  res.status(err.statusCode).json({ message: err.message });
+  res.status(err.statusCode).json({
+    code: err.statusCode,
+    message: err.message,
+  });
 });
 
 app.listen(port, () => {
