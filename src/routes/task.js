@@ -1,8 +1,35 @@
 const router = require("express").Router();
 const controller = require("./../controllers/task");
-const { body } = require("express-validator");
+const { body, param } = require("express-validator");
 const validator = require("./../utility/express-validator");
 
 router.post("/", controller.createTask);
-router.get("/:username", controller.getUserTasks);
+router.get(
+  "/:username",
+  param("username")
+    .notEmpty()
+    .withMessage("masukkan parameter username")
+    .bail(),
+  validator,
+  controller.getUserTasks
+);
+router.put(
+  "/:username/:task_id",
+  param(["username", "task_id"])
+    .notEmpty()
+    .withMessage("masukkan parameter username dan task id")
+    .bail(),
+  validator,
+  controller.editUserTasks
+);
+router.delete(
+  "/:username/:task_id",
+  param(["username", "task_id"])
+    .notEmpty()
+    .withMessage("masukkan parameter username dan task id")
+    .bail(),
+  validator,
+  controller.deleteUserTask
+);
+
 module.exports = router;

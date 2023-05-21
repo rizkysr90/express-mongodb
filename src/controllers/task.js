@@ -1,4 +1,9 @@
-const { create, getUserTasks: getAll } = require("./../services/task");
+const {
+  create,
+  getUserTasks: getAll,
+  editTask,
+  deleteTask,
+} = require("./../services/task");
 
 const createTask = async (req, res, next) => {
   try {
@@ -16,7 +21,27 @@ const getUserTasks = async (req, res, next) => {
     next(error);
   }
 };
+
+const editUserTasks = async (req, res, next) => {
+  try {
+    const response = await editTask(req);
+    res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteUserTask = async (req, res, next) => {
+  try {
+    const response = await deleteTask(req);
+    res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   createTask,
   getUserTasks,
+  editUserTasks,
+  deleteUserTask,
 };
