@@ -7,6 +7,7 @@ const port = process.env.PORT;
 const morgan = require("morgan");
 const userRouter = require("./src/routes/user");
 const taskRouter = require("./src/routes/task");
+const authRouter = require("./src/routes/auth");
 // Connect to the database
 DB.mongoose
   .connect(process.env.MONGO_URI, {
@@ -43,6 +44,7 @@ app.use(
 // });
 app.use("/users", userRouter);
 app.use("/tasks", taskRouter);
+app.use("/auth", authRouter);
 app.use((err, req, res, next) => {
   err.statusCode = err.statusCode ? err.statusCode : 500;
   err.message = err.message ? err.message : "Internal Server Error";
