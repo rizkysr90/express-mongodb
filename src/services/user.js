@@ -29,7 +29,7 @@ const create = async (req) => {
     err.message = "gagal menambahkan data";
     throw err;
   }
-  return { code: 200, message: "berhasil menambahkan data" };
+  return { code: 201, message: "berhasil menambahkan data" };
 };
 
 module.exports = {

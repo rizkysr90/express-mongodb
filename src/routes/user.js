@@ -6,8 +6,9 @@ const validator = require("./../utility/express-validator");
 router.post(
   "/",
   body(["first_name", "last_name", "username", "password", "confirm_password"])
+    .trim()
     .notEmpty()
-    .withMessage("data tidak boleh kosong")
+    .withMessage("data tidak boleh kosong atau mengandung whitespace")
     .bail(),
   body("password")
     .isLength({ min: 8 })

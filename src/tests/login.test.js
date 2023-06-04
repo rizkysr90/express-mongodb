@@ -2,7 +2,7 @@ const app = require("../../server");
 const request = require("supertest");
 const User = require("../models/index").UserModel;
 const mongoose = require("mongoose");
-const bcrypt = require("./../utility/bcrypt");
+const bcrypt = require("../utility/bcrypt");
 require("dotenv").config();
 
 beforeAll(async () => {
