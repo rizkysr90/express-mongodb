@@ -13,7 +13,12 @@ async function verifyLogin(req, res, next) {
   jwt.verify(extractJWT, process.env.SECRET_AT, (err, decoded) => {
     if (err) {
       console.error(err);
-      res.sendStatus(403);
+      return res.status(403).json({
+        meta: {
+          code: 403,
+          msg: "unauthorized - invalid token",
+        },
+      });
     }
     req.user = decoded;
     next();
