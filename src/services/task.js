@@ -1,4 +1,5 @@
 const Task = require("./../models/index").TaskModel;
+const { ObjectId } = require("mongodb");
 const User = require("./../models/index").UserModel;
 const create = async (req) => {
   const newTask = new Task({
@@ -7,13 +8,12 @@ const create = async (req) => {
     date: req.body.date ? req.body.date : new Date(),
   });
   let creationTask = await newTask.save();
-  if (!creationTask) {
-    let err = new Error();
-    err.message = "gagal menambahkan data";
-    throw err;
-  }
+
   return {
     code: 201,
+    data: {
+      id: creationTask.id,
+    },
     message: "berhasil menambahkan data",
   };
 };
@@ -26,15 +26,7 @@ const getUserTasks = async (req) => {
 };
 
 const editTask = async (req) => {
-  const foundUser = await User.findOne({
-    username: req.params.username,
-  }).exec();
-  if (!foundUser) {
-    let err = new Error();
-    err.statusCode = 401;
-    err.message = "unauthorized";
-    throw err;
-  }
+  // const taskId = new ObjectId(req.params.task_id);
   const foundTask = await Task.findOne({
     _id: req.params.task_id,
   }).exec();
@@ -47,7 +39,7 @@ const editTask = async (req) => {
 
   const res = await Task.updateOne(
     {
-      _id: req.params.task_id,
+      _id: req.taskId,
     },
     {
       title: req.body?.title ? req.body?.title : foundTask.title,
@@ -63,15 +55,6 @@ const editTask = async (req) => {
 };
 
 const deleteTask = async (req) => {
-  const foundUser = await User.findOne({
-    username: req.params.username,
-  }).exec();
-  if (!foundUser) {
-    let err = new Error();
-    err.statusCode = 401;
-    err.message = "unauthorized";
-    throw err;
-  }
   const foundTask = await Task.findOne({
     _id: req.params.task_id,
   }).exec();

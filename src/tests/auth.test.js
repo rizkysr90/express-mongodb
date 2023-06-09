@@ -32,7 +32,7 @@ describe("Use case login - POST /api/auth/login", () => {
     const newUser = new User({
       first_name: "John",
       last_name: "Doe",
-      username: "johndoe99",
+      username: "rizkysr90",
       password: await bcrypt.hash("randominternet"),
     });
     await newUser.save();
@@ -42,7 +42,7 @@ describe("Use case login - POST /api/auth/login", () => {
       .post("/auth/login")
       .set("content-type", "application/json")
       .send({
-        username: "johndoe99",
+        username: "rizkysr90",
         password: "randominternet",
       })
       .set("Accept", "application/json");
@@ -50,11 +50,18 @@ describe("Use case login - POST /api/auth/login", () => {
     expect(code).toBe(200);
   }, 5000);
   test("Wrong password", async () => {
+    const newUser = new User({
+      first_name: "John",
+      last_name: "Doe",
+      username: "rizkysr901",
+      password: await bcrypt.hash("randominternet"),
+    });
+    await newUser.save();
     const response = await request(app)
       .post("/auth/login")
       .set("content-type", "application/json")
       .send({
-        username: "johndoe99",
+        username: "rizkysr901",
         password: "notyourfavpassword",
       })
       .set("Accept", "application/json");

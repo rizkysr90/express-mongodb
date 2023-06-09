@@ -6,19 +6,21 @@ const verifyLogin = require("./../middlewares/verifyLogin");
 router.post("/", verifyLogin, controller.createTask);
 router.get("/", verifyLogin, controller.getUserTasks);
 router.put(
-  "/:username/:task_id",
-  param(["username", "task_id"])
+  "/:task_id",
+  verifyLogin,
+  param(["task_id"])
     .notEmpty()
-    .withMessage("masukkan parameter username dan task id")
+    .withMessage("masukkan parameter task id")
     .bail(),
   validator,
   controller.editUserTasks
 );
 router.delete(
-  "/:username/:task_id",
-  param(["username", "task_id"])
+  "/:task_id",
+  verifyLogin,
+  param(["task_id"])
     .notEmpty()
-    .withMessage("masukkan parameter username dan task id")
+    .withMessage("masukkan parameter task id")
     .bail(),
   validator,
   controller.deleteUserTask
